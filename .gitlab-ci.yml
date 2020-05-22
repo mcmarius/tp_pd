@@ -4,19 +4,47 @@
 # see https://hub.docker.com/_/gcc/
 image: gcc:9.3
 
-pages:
-  stage: deploy
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - binaries/
+
+build:
+  stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
+  script:
+    - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
+  artifacts:
+    paths:
+      - main
+      - main.gcno
+
+code-checks 1/3 cppcheck:
+  stage: test
   before_script:
     - apt update && apt -y install cppcheck valgrind gcovr
   script:
-    - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
     - cppcheck --enable=all *.c
+
+code-checks 2/3 valgrind:
+  stage: test
+  script:
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+
+code-checks 3/3 gcov:
+  stage: test
+  script:
     - gcov main.c
     - mkdir coverage/
     - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
+  artifacts:
+    paths:
+      - coverage/
+
+pages:
+  stage: deploy
+  script:
     - mv -v coverage/  public/
   artifacts:
     paths:
