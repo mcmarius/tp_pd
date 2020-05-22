@@ -1,1 +1,3 @@
-# tp_pd
+# Tehnici de programare
+
+## Programare dinamică
