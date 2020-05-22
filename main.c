@@ -122,10 +122,10 @@ void suma_maxima_dreptunghi() {
         }
         printf("\n");
     }
-//    for (int i = 0; i < n; ++i) {
-//        free(mat[i]);
-//    }
-//    free(mat);
+    for (int i = 0; i < n; ++i) {
+        free(mat[i]);
+    }
+    free(mat);
     fclose(f);
 }
 
