@@ -33,7 +33,6 @@ test:
   stage: code-checks
   before_script:
     - apt update && apt -y install cppcheck valgrind gcovr
-    - pip install gcovr
   script:
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
