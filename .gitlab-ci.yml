@@ -8,17 +8,15 @@ build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
-  before_script:
-     - apt update && apt -y install cppcheck valgrind
   script:
     - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
   artifacts:
     paths:
       - main
       # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-  cache:
-    paths:
-      - "*.o"
+#  cache:
+#    paths:
+#      - "*.o"
 
 # run tests using the binary built before
 #test:
@@ -28,7 +26,7 @@ build:
 
 test:
   stage: test
+  before_script:
+     - apt update && apt -y install cppcheck valgrind
   script:
-    - cppcheck --enable=all *.c
-  script:
-    - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+    - cppcheck --enable=all *.c && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
