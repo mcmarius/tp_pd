@@ -14,7 +14,7 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   script:
-    - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
+    - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
   artifacts:
     paths:
       - main
@@ -39,7 +39,7 @@ test:
     - ./main
     - gcov main.c
     - mkdir coverage/
-    - gcovr -r . --html --html-details -o coverage/coverage.html
+    - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
   artifacts:
     paths:
       - coverage/
