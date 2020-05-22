@@ -29,4 +29,5 @@ test:
   before_script:
      - apt update && apt -y install cppcheck valgrind
   script:
-    - cppcheck --enable=all *.c && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+    - cppcheck --enable=all *.c
+    - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
