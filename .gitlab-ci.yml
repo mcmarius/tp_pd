@@ -14,7 +14,7 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   script:
-    - gcc-9 -Wall -Wextra -pedantic -g -lm main.c -o main
+    - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
   artifacts:
     paths:
       - main *.c *.in
@@ -37,8 +37,8 @@ test:
   script:
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
-    - gcov-9 main.c
-    - gcovr -r . --gcov-executable gcov-9 --html --html-details -o coverage.html
+    - gcov main.c
+    - gcovr -r . --html --html-details -o coverage.html
 
 pages:
   stage: deploy
