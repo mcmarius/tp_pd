@@ -26,12 +26,11 @@ build:
 #  script:
 #    - ./runmytests.sh
 
-cppcheck:
+test:
   stage: Static Checks
   script:
     - cppcheck --enable=all *.c
 
-valgrind:
   stage: Runtime Checks
   script:
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
