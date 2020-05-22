@@ -17,7 +17,7 @@ build:
     - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
   artifacts:
     paths:
-      - main *.c *.in
+      - main
       # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
 #  cache:
 #    paths:
@@ -32,18 +32,22 @@ build:
 test:
   stage: code-checks
   before_script:
-    - apt update && apt -y install cppcheck valgrind python python-pip
+    - apt update && apt -y install cppcheck valgrind gcovr
     - pip install gcovr
   script:
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
     - gcov main.c
-    - gcovr -r . --html --html-details -o coverage.html
+    - mkdir coverage/
+    - gcovr -r . --html --html-details -o coverage/coverage.html
+  artifacts:
+    paths:
+      - coverage/
 
 pages:
   stage: deploy
   script:
-    - mv -v *.html  public/
+    - mv -v coverage/  public/
   artifacts:
     paths:
       - public
