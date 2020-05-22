@@ -17,7 +17,6 @@ build:
     - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
-    - ./main
     - gcov main.c
     - mkdir coverage/
     - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
