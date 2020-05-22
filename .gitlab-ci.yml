@@ -6,48 +6,21 @@ image: gcc:9.3
 
 stages:
   - build
-  - code-checks
-  - deploy
 
 build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
-  script:
-    - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
-  artifacts:
-    paths:
-      - main
-      - main.gcno
-      # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-#  cache:
-#    paths:
-#      - "*.o"
-
-# run tests using the binary built before
-#test:
-#  stage: test
-#  script:
-#    - ./runmytests.sh
-
-test:
-  stage: code-checks
   before_script:
     - apt update && apt -y install cppcheck valgrind gcovr
   script:
+    - gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
     - ./main
     - gcov main.c
     - mkdir coverage/
     - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
-  artifacts:
-    paths:
-      - coverage/
-
-pages:
-  stage: deploy
-  script:
     - mv -v coverage/  public/
   artifacts:
     paths:
