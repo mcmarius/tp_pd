@@ -65,6 +65,7 @@ void subsir_crescator_maximal2() {
     printf("\n");
     afis(t, pred, max_i);
     printf("\n");
+    free(pred);
     free(lmax);
     free(t);
     fclose(f);
