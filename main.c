@@ -14,10 +14,10 @@ void subsir_crescator_maximal2();
 void afis(int *, int *, int);
 
 int main() {
-//    suma_maxima_triunghi();
+    suma_maxima_triunghi();
     suma_maxima_dreptunghi();
     subsir_crescator_maximal2();
-//    subsir_crescator_maximal();
+    subsir_crescator_maximal();
     return 0;
 }
 
@@ -157,11 +157,11 @@ void subsir_crescator_maximal() {
 
         }
     }
-//    printf("greedy: %d %d\n", i_best, max_len);
-//    for (int i = i_best; i < i_best + max_len; ++i) {
-//        printf("%d ", v[i]);
-//    }
-//    printf("\n");
+    printf("greedy: %d %d\n", i_best, max_len);
+    for (int i = i_best; i < i_best + max_len; ++i) {
+        printf("%d ", v[i]);
+    }
+    printf("\n");
 
     printf("pd: ");
     for (int i = 0; i < n; ++i) {
@@ -185,13 +185,13 @@ void subsir_crescator_maximal() {
         printf("%d ", pred[i]);
     }
     printf("\n");
-    int prev = 0;
-    for (int i = 0; i < n; ++i) {
-        if(pred[i] > -1) {
-            prev = i;
-            break;
-        }
-    }
+//    int prev = 0;
+//    for (int i = 0; i < n; ++i) {
+//        if(pred[i] > -1) {
+//            prev = i;
+//            break;
+//        }
+//    }
 
     printf("%d\n", l_max);
 //    while (pred[l_i] > -1) {
@@ -229,7 +229,7 @@ void suma_maxima_triunghi() {
         }
     }
     //greedy
-    int max_g = 0, max_val_g = mat[0][0];
+    int max_g = 0;//, max_val_g = mat[0][0];
     printf("greedy: %d ", mat[0][0]);
     for (int i = 1; i < n; ++i) {
         if(mat[i][max_g] < mat[i][max_g+1]) {
@@ -261,12 +261,10 @@ void suma_maxima_triunghi() {
     }
     printf("pd: %d ", max_val);
     for (int i = n-2; i >= 0; --i) {
-        if(mat[i][max_i] > mat[i][max_i-1]) {
-            printf("%d ", mat[i][max_i]);
-        } else {
-            printf("%d ", mat[i][max_i-1]);
+        if(max_i > 0 && mat[i][max_i] < mat[i][max_i-1]) {
             max_i--;
         }
+        printf("%d ", mat[i][max_i]);
     }
     printf("\n");
     for (int i = 0; i < n; ++i) {
