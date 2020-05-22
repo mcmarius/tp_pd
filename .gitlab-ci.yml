@@ -11,7 +11,7 @@ build:
   before_script:
      - apt update && apt -y install cppcheck valgrind
   script:
-    - g++ main.c -o main
+    - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
   artifacts:
     paths:
       - main
