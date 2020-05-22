@@ -2,17 +2,22 @@
 # use the official gcc image, based on debian
 # can use verions as well, like gcc:5.2
 # see https://hub.docker.com/_/gcc/
-image: gcc
+image: gcc:9.3
+
+stages:
+  - build
+  - code-checks
+  - deploy
 
 build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   script:
-    - gcc -Wall -Wextra -pedantic -g -lm main.c -o main
+    - gcc-9 -Wall -Wextra -pedantic -g -lm main.c -o main
   artifacts:
     paths:
-      - main
+      - main *.c *.in
       # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
 #  cache:
 #    paths:
@@ -25,9 +30,20 @@ build:
 #    - ./runmytests.sh
 
 test:
-  stage: test
+  stage: code-checks
   before_script:
-     - apt update && apt -y install cppcheck valgrind
+    - apt update && apt -y install cppcheck valgrind python python-pip
+    - pip install gcovr
   script:
     - cppcheck --enable=all *.c
     - valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+    - gcov-9 main.c
+    - gcovr -r . --gcov-executable gcov-9 --html --html-details -o coverage.html
+
+pages:
+  stage: deploy
+  script:
+    - mv -v *.html  public/
+  artifacts:
+    paths:
+      - public
