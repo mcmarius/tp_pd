@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: gcc -Wall -Wextra -pedantic main.c -o main
+      run: gcc -Wall -Wextra -pedantic -g -lm main.c -o main
