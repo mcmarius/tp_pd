@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <limits.h>
+#include <string.h>
 
 void suma_maxima_triunghi();
 
@@ -13,12 +14,142 @@ void subsir_crescator_maximal2();
 
 void afis(int *, int *, int);
 
+void sapt_13();
+
+void sapt_14();
+
+void subsir_comun_maximal();
+
+#define MAX_LEN 100
+
+void afis_solutii(int lmax[MAX_LEN+1][MAX_LEN+1], const char *s, const char *t, unsigned int i, unsigned int i1);
+
+void plata_suma();
+
 int main() {
+//    sapt_13();
+    sapt_14();
+    return 0;
+}
+
+void sapt_14() {
+//    subsir_comun_maximal();
+    plata_suma();
+}
+
+void plata_suma() {
+    FILE *f = fopen("monede.in", "r");
+    int p, n, *v, *nrmin, *pred;
+    fscanf(f, "%d %d", &p, &n);
+    v = malloc(n*sizeof(int));
+    nrmin = malloc((p+1)*sizeof(int));
+    pred = malloc((p+1)*sizeof(int));
+    for (int i = 0; i < n; ++i) {
+        fscanf(f, "%d", &v[i]);
+    }
+    for (int i = 0; i <= p; ++i) {
+        nrmin[i] = p+1;
+        pred[i] = -1;
+    }
+    fclose(f);
+    nrmin[0] = 0;
+    for (int i = 1; i <= p; ++i) {
+        for (int j = 0; j < i; ++j) {
+            if(i-v[j] >=0 && i-v[j] < p && nrmin[i-v[j]]+1 < nrmin[i]) {
+                nrmin[i] = nrmin[i-v[j]]+1;
+                pred[i] = v[j];
+            }
+        }
+    }
+    for (int i = 0; i <= p; ++i) {
+        printf("%d ", nrmin[i]);
+    }
+    printf("\n");
+    for (int i = 0; i <= p; ++i) {
+        printf("%d ", pred[i]);
+    }
+    printf("\n%d", pred[p]);
+    for (int i = p-pred[p]; pred[i] !=-1; i = i-pred[i]) {
+        printf(" %d", pred[i]);
+    }
+    printf("\n");
+
+
+    free(pred);
+    free(nrmin);
+    free(v);
+}
+
+
+void subsir_comun_maximal() {
+    char s[MAX_LEN], t[MAX_LEN];
+    unsigned int  n, m;
+    int lmax[MAX_LEN + 1][MAX_LEN + 1];
+    FILE *f = fopen("scm.in", "r");
+//    fscanf(f, "%s %s", s, t);
+    fgets(s, MAX_LEN, f);
+    fgets(t, MAX_LEN, f);
+    n = strlen(s);
+    m = strlen(t);
+    if(s[n-1] == '\n') {
+        s[n-1] = '\0';
+        n--;
+    }
+    if(t[m-1] == '\n') {
+        t[m-1] = '\0';
+        m--;
+    }
+    for (unsigned int i = 0; i < n; ++i) {
+        lmax[0][i] = lmax[i][0] = 0;
+    }
+    for (unsigned int i = 1; i <= n; ++i) {
+        for (unsigned int j = 1; j <= m; ++j) {
+            if (s[i-1] == t[j-1]) {
+                lmax[i][j] = lmax[i-1][j-1] + 1;
+            } else {
+                lmax[i][j] = fmax(lmax[i][j-1], lmax[i-1][j]);
+            }
+        }
+    }
+    printf("      ");
+    for (unsigned int i = 0; i < m; ++i) {
+        printf("%3c", t[i]);
+    }
+    printf("\n");
+    for (unsigned int i = 0; i <= n; ++i) {
+        if(i>0)
+            printf("%3c", s[i-1]);
+        else
+            printf("   ");
+        for (unsigned int j = 0; j <= m; ++j) {
+            printf("%3d", lmax[i][j]);
+        }
+        printf("\n");
+    }
+    fclose(f);
+    afis_solutii(lmax, s, t, n, m);
+    printf("\n");
+}
+
+void afis_solutii(int lmax[MAX_LEN+1][MAX_LEN+1], const char *s, const char *t, unsigned int i, unsigned int j) {
+    if(i==0 || j==0)
+        return;
+    if(s[i-1] == t[j-1]) {
+        afis_solutii(lmax, s, t, i-1, j-1);
+        printf("%c", s[i - 1]);
+    } else {
+        if(lmax[i-1][j] > lmax[i][j-1])
+            afis_solutii(lmax, s, t, i-1, j);
+        else
+            afis_solutii(lmax, s, t, i, j-1);
+    }
+}
+
+void sapt_13() {
     suma_maxima_triunghi();
     suma_maxima_dreptunghi();
     subsir_crescator_maximal2();
     subsir_crescator_maximal();
-    return 0;
 }
 
 void subsir_crescator_maximal2() {
