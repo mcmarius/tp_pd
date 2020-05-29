@@ -17,19 +17,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: dependencies
-      run: 
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test &&
-        sudo apt-get update &&
-        sudo apt-get install -y gcc-9 g++-9 valgrind cppcheck gcovr
+      run:
+        sudo apt-get install -y valgrind cppcheck gcovr
     - name: make
-      run: gcc-9 -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 main.c -o main -lm
+      run: gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 main.c -o main -lm
     - name: cppcheck
       run: cppcheck --enable=all *.c
     - name: valgrind
       run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
     - name: coverage
       run: |
-        gcov-9 main.c
+        gcov main.c
         mkdir coverage/
         gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
         mv -v coverage/  public/
