@@ -13,5 +13,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: dependencies
+      run:
+        sudo apt-get install -y valgrind cppcheck gcovr
     - name: make
-      run: gcc -Wall -Wextra -pedantic -g main.c -o main -lm
+      run: gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
+    - name: cppcheck
+      run: cppcheck --enable=all *.c
+    - name: valgrind
+      run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+    - name: coverage
+      run: |
+        - gcov main.c
+        - mkdir coverage/
+        - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
