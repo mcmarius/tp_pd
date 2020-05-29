@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
     steps:
     - uses: actions/checkout@v2
@@ -26,6 +29,12 @@ jobs:
       run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
     - name: coverage
       run: |
-        gcov-9 main.c &&
-        mkdir coverage/ &&
+        gcov-9 main.c
+        mkdir coverage/
         gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
+        mv -v coverage/  public/
+    - name: deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
