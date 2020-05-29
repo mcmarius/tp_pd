@@ -17,7 +17,7 @@ jobs:
       run:
         sudo apt-get install -y valgrind cppcheck gcovr
     - name: make
-      run: gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 -lm main.c -o main
+      run: gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 main.c -o main -lm
     - name: cppcheck
       run: cppcheck --enable=all *.c
     - name: valgrind
