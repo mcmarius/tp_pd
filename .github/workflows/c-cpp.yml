@@ -26,6 +26,6 @@ jobs:
       run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
     - name: coverage
       run: |
-        - gcov-9 main.c
-        - mkdir coverage/
-        - gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
+        gcov-9 main.c
+        mkdir coverage/
+        gcovr -r . --html --html-details -o coverage/coverage.html --print-summary
