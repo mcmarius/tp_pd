@@ -22,7 +22,7 @@ void subsir_comun_maximal();
 
 #define MAX_LEN 100
 
-void afis_solutii(int lmax[MAX_LEN+1][MAX_LEN+1], const char *s, const char *t, unsigned int i, unsigned int i1);
+void afis_solutii(int lmax[MAX_LEN+1][MAX_LEN+1], const char *s, const char *t, unsigned int i, unsigned int j);
 
 void plata_suma();
 
