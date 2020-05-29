@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: dependencies
       run:
-        sudo apt-get install -y valgrind cppcheck gcovr
+        sudo apt-get install -y gcc valgrind cppcheck gcovr
     - name: make
       run: gcc -Wall -Wextra -pedantic --coverage -fprofile-arcs -ftest-coverage -g -O0 main.c -o main -lm
     - name: cppcheck
