@@ -27,13 +27,13 @@ void afis_solutii(int lmax[MAX_LEN+1][MAX_LEN+1], const char *s, const char *t, 
 void plata_suma();
 
 int main() {
-//    sapt_13();
+    sapt_13();
     sapt_14();
     return 0;
 }
 
 void sapt_14() {
-//    subsir_comun_maximal();
+    subsir_comun_maximal();
     plata_suma();
 }
 
@@ -54,7 +54,7 @@ void plata_suma() {
     fclose(f);
     nrmin[0] = 0;
     for (int i = 1; i <= p; ++i) {
-        for (int j = 0; j < i; ++j) {
+        for (int j = 0; j < n; ++j) {
             if(i-v[j] >=0 && i-v[j] < p && nrmin[i-v[j]]+1 < nrmin[i]) {
                 nrmin[i] = nrmin[i-v[j]]+1;
                 pred[i] = v[j];
