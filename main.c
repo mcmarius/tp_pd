@@ -99,8 +99,11 @@ void subsir_comun_maximal() {
         t[m-1] = '\0';
         m--;
     }
-    for (unsigned int i = 0; i < n; ++i) {
-        lmax[0][i] = lmax[i][0] = 0;
+    for (unsigned int i = 0; i <= n; ++i) {
+        lmax[i][0] = 0;
+    }
+    for (unsigned int i = 0; i <= m; ++i) {
+        lmax[0][i] = 0;
     }
     for (unsigned int i = 1; i <= n; ++i) {
         for (unsigned int j = 1; j <= m; ++j) {
